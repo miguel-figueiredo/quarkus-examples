@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  db:
+    container_name: db
+    image: postgres:11.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - ALLOW_IP_RANGE='0.0.0.0/0'
+    ports:
+      - 5432:5432
