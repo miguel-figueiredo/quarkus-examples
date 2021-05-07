@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  aws-s3:
+    image: localstack/localstack:0.12.11
+    container_name: aws-s3
+    environment:
+      - SERVICES=s3
+      - AWS_ACCESS_KEY_ID=s3
+      - AWS_SECRET_ACCESS_KEY=s3
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./docker-entrypoint-initaws.d:/docker-entrypoint-initaws.d
+    ports:
+      - "4566:4566"
+  elasticsearch:
+    image: elasticsearch:7.12.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=password
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
