@@ -10,5 +10,19 @@
  * is strictly prohibited.
  *
  */
-package test.quarkus;public class Produced {
+package test.quarkus;
+
+import java.util.UUID;
+
+public class Greeting {
+    private final String id;
+
+    public Greeting() {
+        id = UUID.randomUUID().toString();
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
 }

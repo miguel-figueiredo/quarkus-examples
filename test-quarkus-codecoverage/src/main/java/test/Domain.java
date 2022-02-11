@@ -2,7 +2,7 @@
  *
  * Talkdesk Confidential
  *
- * Copyright (C) Talkdesk Inc. 2021
+ * Copyright (C) Talkdesk Inc. 2022
  *
  * The source code for this program is not published or otherwise divested
  * of its trade secrets, irrespective of what has been deposited with the
@@ -10,19 +10,11 @@
  * is strictly prohibited.
  *
  */
-package test.quarkus;
+package test;
 
+public class Domain {
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Singleton;
-import javax.ws.rs.Produces;
-
-@Dependent
-public class Producer {
-
-    @Produces
-    @Singleton
-    public Greeting produceGreeting() {
-        return new Greeting();
+    public int add(int x, int y) {
+        return x + y;
     }
 }
