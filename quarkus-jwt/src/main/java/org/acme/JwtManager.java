@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @ApplicationScoped
@@ -31,15 +32,18 @@ public class JwtManager {
     @Inject
     private JWTParser parser;
 
+    @ConfigProperty(name = "smallrye.jwt.sign.algorithm")
+    private SignatureAlgorithm signatureAlgorithm;
+
     public String createJwt() {
         return Jwt.claim("id", "id")
             .upn("test")
             .expiresIn(Duration.ofHours(1))
-            .jws().algorithm(SignatureAlgorithm.ES256)
+            .jws().algorithm(signatureAlgorithm)
             .sign();
     }
 
-    public JsonWebToken validateJwt(final String jwt) throws ParseException, GeneralSecurityException, IOException {
+    public JsonWebToken validateJwt(final String jwt) throws ParseException {
         return parser.parse(jwt);
     }
 }
