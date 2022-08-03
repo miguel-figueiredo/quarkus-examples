@@ -20,6 +20,8 @@ import io.smallrye.jwt.util.KeyUtils;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -35,10 +37,12 @@ public class JwtManager {
     @ConfigProperty(name = "smallrye.jwt.sign.algorithm")
     private SignatureAlgorithm signatureAlgorithm;
 
+    @ConfigProperty(name = "jwt.duration")
+    private Duration duration;
+
     public String createJwt() {
         return Jwt.claim("id", "id")
-            .upn("test")
-            .expiresIn(Duration.ofHours(1))
+            .expiresIn(duration)
             .jws().algorithm(signatureAlgorithm)
             .sign();
     }
