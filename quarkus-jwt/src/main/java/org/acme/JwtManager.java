@@ -12,9 +12,13 @@
  */
 package org.acme;
 
+import io.smallrye.jwt.algorithm.SignatureAlgorithm;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
 import io.smallrye.jwt.build.Jwt;
+import io.smallrye.jwt.util.KeyUtils;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
@@ -27,20 +31,15 @@ public class JwtManager {
     @Inject
     private JWTParser parser;
 
-    // Created with: openssl ecparam -name prime256v1 -genkey -noout
-    private static final String SECRET =
-        "MHcCAQEEIBNrdGICVOE5Cox7NPGY02/6HTb2iU8TED7DmlJHLJSjoAoGCCqGSM49\n"
-        + "AwEHoUQDQgAEJiBEVs4sWMnR1+2YJAzflyTqIoaiETOqWcDzNydsjX4EIsqo2jcc\n"
-        + "E4iAJGMxqzm4vQLr0H73L44hGbm2qTGQsg==";
-
     public String createJwt() {
         return Jwt.claim("id", "id")
             .upn("test")
             .expiresIn(Duration.ofHours(1))
-            .signWithSecret(SECRET);
+            .jws().algorithm(SignatureAlgorithm.ES256)
+            .sign();
     }
 
-    public JsonWebToken validateJwt(final String jwt) throws ParseException {
-        return parser.verify(jwt, SECRET);
+    public JsonWebToken validateJwt(final String jwt) throws ParseException, GeneralSecurityException, IOException {
+        return parser.parse(jwt);
     }
 }

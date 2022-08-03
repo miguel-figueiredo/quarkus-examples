@@ -16,7 +16,7 @@ class JwtProducerTest {
     private JwtManager subject;
 
     @Test
-    void jwt() throws ParseException {
+    void jwt() throws Exception {
         String jwt = subject.createJwt();
         JsonWebToken jsonWebToken = subject.validateJwt(jwt);
         System.out.println(jwt);
