@@ -7,7 +7,7 @@ import java.util.TreeMap;
 public class BillDb {
 
 	private static CustomerDataBean custBean;
-	private static TreeMap billBeans;
+	private static TreeMap<Integer, BillDataBean> billBeans;
 
 	static {
 		custBean = new CustomerDataBean(new Integer(1), "Sue", "Smith");
