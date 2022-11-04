@@ -1,12 +1,14 @@
 package org.acme.extensiblejava.bill;
 
+import extensiblejava.audit.AuditFacade;
+import extensiblejava.audit.Auditable;
 import java.math.BigDecimal;
-import org.acme.extensiblejava.audit.AuditFacade;
 import org.acme.extensiblejava.bill.data.BillDataBean;
 import org.acme.extensiblejava.bill.data.BillDb;
+import org.acme.extensiblejava.financial.Payable;
 import org.acme.extensiblejava.financial.Payment;
 
-public class Bill {
+public class Bill implements Auditable, Payable {
 
 	private BillDataBean billData;
 
@@ -19,7 +21,9 @@ public class Bill {
 
 	public String getBillId() {	return this.billData.getBillId().toString(); }
 	public String getName() { return this.billData.getName(); }
+	@Override
 	public BigDecimal getAmount() { return this.billData.getAmount(); }
+	@Override
 	public BigDecimal getAuditedAmount() { return (this.billData.getAuditedAmount() == null ? null : this.billData.getAuditedAmount()); }
 	public BigDecimal getPaidAmount() { return this.billData.getPaidAmount(); }
 	public String getStatus() {

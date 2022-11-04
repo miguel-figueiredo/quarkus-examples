@@ -3,13 +3,9 @@ package org.acme.extensiblejava.bill;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import extensiblejava.audit.AuditFacadeImpl;
 import java.math.BigDecimal;
 import java.util.Iterator;
-import org.acme.extensiblejava.audit.AuditFacadeImpl;
-import org.acme.extensiblejava.bill.Bill;
-import org.acme.extensiblejava.bill.BillEntityLoader;
-import org.acme.extensiblejava.bill.Customer;
-import org.acme.extensiblejava.bill.DefaultCustomerEntityLoader;
 import org.acme.extensiblejava.bill.data.BillDataBean;
 import org.junit.jupiter.api.Test;
 

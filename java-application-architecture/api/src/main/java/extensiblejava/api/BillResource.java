@@ -1,10 +1,10 @@
 package extensiblejava.api;
 
+import extensiblejava.audit.AuditFacadeImpl;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import org.acme.extensiblejava.audit.AuditFacadeImpl;
 import org.acme.extensiblejava.bill.Bill;
 import org.acme.extensiblejava.bill.DefaultBillEntityLoader;
 

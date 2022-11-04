@@ -1,11 +1,10 @@
-package org.acme.extensiblejava.audit;
+package extensiblejava.audit;
 
 import java.math.BigDecimal;
-import org.acme.extensiblejava.bill.Bill;
 
 public class AuditFacadeImpl implements AuditFacade {
-	public BigDecimal audit(Bill bill) {
-		BigDecimal amount = bill.getAmount();
+	public BigDecimal audit(Auditable auditable) {
+		BigDecimal amount = auditable.getAmount();
 		BigDecimal auditedAmount = amount.multiply(new BigDecimal("0.75"));
 		return auditedAmount.setScale(2);
 	}
