@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import org.acme.extensiblejava.audit.AuditFacadeImpl;
 import org.acme.extensiblejava.bill.Bill;
 import org.acme.extensiblejava.bill.BillEntityLoader;
 import org.acme.extensiblejava.bill.Customer;
@@ -42,7 +43,7 @@ public class BillTest {
                 return new Bill(new BillDataBean(new Integer(1), new Integer(1), "ONE", new BigDecimal("25.00"), null, null));
             }
         });
-        bill.audit();
+        bill.audit(new AuditFacadeImpl());
         BigDecimal auditedAmount = bill.getAuditedAmount();
         assertEquals(new BigDecimal("18.75"), auditedAmount);
     }
@@ -67,7 +68,7 @@ public class BillTest {
         });
         bill.pay();
         BigDecimal paidAmount = bill.getPaidAmount();
-        bill.audit();
+        bill.audit(new AuditFacadeImpl());
         BigDecimal paidAmountAfter = bill.getPaidAmount();
         assertEquals(paidAmount, paidAmountAfter);
     }

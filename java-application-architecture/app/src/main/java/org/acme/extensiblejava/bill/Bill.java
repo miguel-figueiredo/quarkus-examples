@@ -32,8 +32,7 @@ public class Bill {
 		}
 	}
 
-	public void audit() {
-		AuditFacade auditor = new AuditFacade();
+	public void audit(AuditFacade auditor) {
 		this.billData.setAuditedAmount(auditor.audit(this));
 		this.persist();
 	}

@@ -4,6 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import org.acme.extensiblejava.audit.AuditFacadeImpl;
 import org.acme.extensiblejava.bill.Bill;
 import org.acme.extensiblejava.bill.DefaultBillEntityLoader;
 
@@ -20,7 +21,7 @@ public class BillResource {
     @Path("/{id}/audit")
     public Bill audit(@PathParam("id") Integer id) {
         Bill bill = get(id);
-        bill.audit();
+        bill.audit(new AuditFacadeImpl());
         return bill;
     }
 
