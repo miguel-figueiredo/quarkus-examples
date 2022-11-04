@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import org.acme.extensiblejava.bill.Bill;
+import org.acme.extensiblejava.bill.BillEntityLoader;
+import org.acme.extensiblejava.bill.Customer;
+import org.acme.extensiblejava.bill.DefaultCustomerEntityLoader;
 import org.acme.extensiblejava.bill.data.BillDataBean;
 import org.junit.jupiter.api.Test;
 

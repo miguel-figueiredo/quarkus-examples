@@ -1,4 +1,4 @@
-package org.acme.extensiblejava.api;
+package extensiblejava.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;

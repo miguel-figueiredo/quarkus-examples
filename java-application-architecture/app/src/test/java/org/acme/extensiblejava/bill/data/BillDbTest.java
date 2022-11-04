@@ -3,6 +3,9 @@ package org.acme.extensiblejava.bill.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Iterator;
+import org.acme.extensiblejava.bill.data.BillDataBean;
+import org.acme.extensiblejava.bill.data.BillDb;
+import org.acme.extensiblejava.bill.data.CustomerDataBean;
 import org.junit.jupiter.api.Test;
 
 public class BillDbTest {
