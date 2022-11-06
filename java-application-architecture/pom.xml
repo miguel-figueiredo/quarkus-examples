@@ -7,9 +7,11 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>api</module>
-        <module>audit</module>
-        <module>app</module>
+        <module>audit-api</module>
         <module>financial</module>
+        <module>audit-1</module>
+        <module>audit-2</module>
+        <module>api</module>
+        <module>app</module>
     </modules>
 </project>

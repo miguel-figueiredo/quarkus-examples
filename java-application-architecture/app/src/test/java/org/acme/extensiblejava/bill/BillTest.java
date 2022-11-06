@@ -1,19 +1,25 @@
 package org.acme.extensiblejava.bill;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import extensiblejava.audit.AuditFacadeImpl;
-import java.math.BigDecimal;
-import java.util.Iterator;
+import extensiblejava.audit.AuditFacade;
 import org.acme.extensiblejava.bill.data.BillDataBean;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.math.BigDecimal;
+import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BillTest {
 
+    public static final String AUDITED_AMOUNT = "18.75";
+
     @Test
     public void testCustomerLoader() {
-        Customer cust = Customer.loadCustomer(new DefaultCustomerEntityLoader(new Integer(1)));
+        Customer cust = Customer.loadCustomer(new DefaultCustomerEntityLoader(1));
         assertNotNull(cust.getName());
 
         Iterator bills = cust.getBills().iterator();
@@ -26,7 +32,7 @@ public class BillTest {
     public void testBillLoader() {
         Bill bill = Bill.loadBill(new BillEntityLoader() {
             public Bill loadBill() {
-                return new Bill(new BillDataBean(new Integer(1), new Integer(1), "ONE", new BigDecimal("25.00"), null, null));
+                return new Bill(new BillDataBean(1, 1, "ONE", new BigDecimal("25.00"), null, null));
             }
         });
         assertNotNull(bill);
@@ -36,19 +42,19 @@ public class BillTest {
     public void testAudit() {
         Bill bill = Bill.loadBill(new BillEntityLoader() {
             public Bill loadBill() {
-                return new Bill(new BillDataBean(new Integer(1), new Integer(1), "ONE", new BigDecimal("25.00"), null, null));
+                return new Bill(new BillDataBean(1, 1, "ONE", new BigDecimal("25.00"), null, null));
             }
         });
-        bill.audit(new AuditFacadeImpl());
+        bill.audit(getAuditFacade());
         BigDecimal auditedAmount = bill.getAuditedAmount();
-        assertEquals(new BigDecimal("18.75"), auditedAmount);
+        assertEquals(new BigDecimal(AUDITED_AMOUNT), auditedAmount);
     }
 
     @Test
     public void testPay() {
         Bill bill = Bill.loadBill(new BillEntityLoader() {
             public Bill loadBill() {
-                return new Bill(new BillDataBean(new Integer(1), new Integer(1), "ONE", new BigDecimal("25.00"), null, null));
+                return new Bill(new BillDataBean(1, 1, "ONE", new BigDecimal("25.00"), null, null));
             }
         });
         bill.pay();
@@ -59,13 +65,19 @@ public class BillTest {
     public void testAuditAfterPay() {
         Bill bill = Bill.loadBill(new BillEntityLoader() {
             public Bill loadBill() {
-                return new Bill(new BillDataBean(new Integer(1), new Integer(1), "ONE", new BigDecimal("25.00"), null, null));
+                return new Bill(new BillDataBean(1, 1, "ONE", new BigDecimal("25.00"), null, null));
             }
         });
         bill.pay();
         BigDecimal paidAmount = bill.getPaidAmount();
-        bill.audit(new AuditFacadeImpl());
+        bill.audit(getAuditFacade());
         BigDecimal paidAmountAfter = bill.getPaidAmount();
         assertEquals(paidAmount, paidAmountAfter);
+    }
+
+    private AuditFacade getAuditFacade() {
+        AuditFacade auditFacade = mock(AuditFacade.class);
+        when(auditFacade.audit(Mockito.any())).thenReturn(new BigDecimal(AUDITED_AMOUNT));
+        return auditFacade;
     }
 }

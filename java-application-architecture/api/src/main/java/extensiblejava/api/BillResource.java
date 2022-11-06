@@ -1,10 +1,11 @@
 package extensiblejava.api;
 
-import extensiblejava.audit.AuditFacadeImpl;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+
+import extensiblejava.audit.AuditFacade1;
 import org.acme.extensiblejava.bill.Bill;
 import org.acme.extensiblejava.bill.DefaultBillEntityLoader;
 
@@ -21,7 +22,7 @@ public class BillResource {
     @Path("/{id}/audit")
     public Bill audit(@PathParam("id") Integer id) {
         Bill bill = get(id);
-        bill.audit(new AuditFacadeImpl());
+        bill.audit(new AuditFacade1());
         return bill;
     }
 
