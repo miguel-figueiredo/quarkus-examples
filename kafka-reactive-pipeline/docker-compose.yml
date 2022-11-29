@@ -1,0 +1,60 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  kafka:
+    image: docker.vectorized.io/vectorized/redpanda:v22.1.4
+    hostname: kafka
+    container_name: kafka
+    command:
+      - redpanda
+      - start
+      - --smp
+      - '1'
+      - --reserve-memory
+      - 0M
+      - --overprovisioned
+      - --node-id
+      - '0'
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:19092,OUTSIDE://0.0.0.0:9092
+      - --advertise-kafka-addr
+      - PLAINTEXT://kafka:19092,OUTSIDE://localhost:9092
+    ports:
+      - "9092:9092"
+
+  kafka-tools:
+    # adapted from https://github.com/confluentinc/examples/blob/5.4.1-post/ccloud/docker-compose.yml
+    image: confluentinc/cp-kafka:7.2.0
+    hostname: kafka-tools
+    container_name: kafka-tools
+    depends_on:
+      - kafka
+    # We defined a dependency on "kafka", but `depends_on` will NOT wait for the
+    # dependencies to be "ready" before starting the "kafka-tools"
+    # container;  it waits only until the dependencies have started.  Hence we
+    # must control startup order more explicitly.
+    # See https://docs.docker.com/compose/startup-order/
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+                       cub kafka-ready -b kafka:19092 1 20 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-in --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-out --partitions 2 --replication-factor 1 && \
+                       sleep infinity'"
+    environment:
+      # The following settings are listed here only to satisfy the image's requirements.
+      # We override the image's `command` anyways, hence this container will not start a broker.
+      KAFKA_BROKER_ID: ignored
+      KAFKA_ZOOKEEPER_CONNECT: ignored
+    volumes:
+      - ./local-infra/kafka:/home/kafka
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    hostname: kafdrop
+    environment:
+      KAFKA_BROKERCONNECT: kafka:19092
+    depends_on:
+      - kafka
+    ports:
+      - "9000:9000"
