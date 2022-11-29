@@ -3,6 +3,7 @@ package org.acme;
 import io.smallrye.common.annotation.NonBlocking;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import java.time.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.*;
 
@@ -26,6 +27,7 @@ public class KafkaPipeline {
     public Multi<String> execute(Multi<String> messages) {
         return messages
             .onItem().invoke(s -> log.info("Received: {}", s))
+            //.onItem().call(() -> Uni.createFrom().voidItem().onItem().delayIt().by(Duration.ofSeconds(10)))
             .onItem().transformToUniAndMerge(greetingService::hello)
             .onItem().invoke(s -> log.info("Sending: {}", s));
     }
