@@ -39,6 +39,16 @@ services:
                        cub kafka-ready -b kafka:19092 1 20 && \
                        kafka-topics --bootstrap-server kafka:19092 --create --topic words-in --partitions 2 --replication-factor 1 && \
                        kafka-topics --bootstrap-server kafka:19092 --create --topic words-out --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-delayed-in --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-delayed-out --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-split-in --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-split-out --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-emitter-in --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-emitter-out --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-manual-ack-in --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-manual-ack-out --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-manual-ack-emitter-in --partitions 2 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:19092 --create --topic words-manual-ack-emitter-out --partitions 2 --replication-factor 1 && \
                        sleep infinity'"
     environment:
       # The following settings are listed here only to satisfy the image's requirements.

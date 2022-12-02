@@ -10,3 +10,12 @@ Produce messages:
 Consume messages:
 
 `kcat -b localhost:9092 -C -t words-out`
+
+Available topics:
+
+words-in -> words-out
+words-delayed-in -> words-delayed-out
+words-split-in -> words-split-out
+words-emitter-in -> words-emitter-out
+words-manual-ack-in -> words-manual-ack-out
+words-manual-ack-emitter-in -> words-manual-ack-emitter-out
