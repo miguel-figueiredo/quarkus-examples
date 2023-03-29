@@ -1,7 +1,5 @@
 package org.acme;
 
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
-import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
@@ -29,14 +27,15 @@ public class FishResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ReactiveTransactional
-    public Uni<Fish> createFish(Fish fish) {
-        return repository.persist(fish);
+    @Transactional
+    public Fish createFish(Fish fish) {
+        repository.persist(fish);
+        return fish;
     }
 
     @GET
     @Path("/{id}")
-    public Uni<String> getFish(@PathParam("id") String id) {
-        return Uni.createFrom().completionStage(service.get(id));
+    public String getFish(@PathParam("id") String id) {
+        return service.get(id);
     }
 }
